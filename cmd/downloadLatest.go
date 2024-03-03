@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"fmt"
 	"ppd/download"
 	"ppd/metadata"
+	"ppd/util"
 
 	"github.com/spf13/cobra"
 )
@@ -41,21 +41,7 @@ func downloadLatest(cmd *cobra.Command, args []string) {
 	path, oError := cmd.Flags().GetString("output")
 	prefixWithDate, pError := cmd.Flags().GetBool("date-prefix")
 
-	if fError != nil {
-		fmt.Printf("%v", fError)
-	}
-
-	if nError != nil {
-		fmt.Printf("%v", nError)
-	}
-
-	if pError != nil {
-		fmt.Printf("%v", pError)
-	}
-
-	if oError != nil {
-		fmt.Printf("%v", pError)
-	}
+	util.CheckAndPrintErrors(fError, nError, oError, pError)
 
 	commandInput := download.DownloadOptions{
 		NLatestEpisodes:     nLatestEpisodes,

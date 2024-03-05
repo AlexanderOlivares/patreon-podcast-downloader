@@ -14,7 +14,7 @@ type Episode struct {
 	GUID  string
 }
 
-func GetMetadata(feedUrl string) []Episode {
+func GetMetadata(feedUrl string, targetEpisodeGUID ...string) []Episode {
 
 	fp := gofeed.NewParser()
 
@@ -26,8 +26,19 @@ func GetMetadata(feedUrl string) []Episode {
 	fmt.Println("Feed Title:", feed.Title)
 	fmt.Println("Feed Description:", feed.Description)
 
-	var episodes []Episode
+	episodes := make([]Episode, 0, len(feed.Items))
 	for _, item := range feed.Items {
+		// Only return the targeted episode
+		if len(targetEpisodeGUID) > 0 && item.GUID == targetEpisodeGUID[0] {
+			return []Episode{
+				{
+					Title: item.Title,
+					Date:  item.Published,
+					URL:   item.Enclosures[0].URL,
+					GUID:  item.GUID,
+				},
+			}
+		}
 		episode := Episode{
 			Title: item.Title,
 			Date:  item.Published,

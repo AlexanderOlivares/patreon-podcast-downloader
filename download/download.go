@@ -30,6 +30,10 @@ func DownloadEpisodes(episodesMetadata []metadata.Episode, options DownloadOptio
 	}
 
 	episodes := func() []metadata.Episode {
+		// Download one episode
+		if options.TargetEpisodeNumber != "" && len(episodesMetadata) == 1 {
+			return episodesMetadata
+		}
 		// Download all episodes
 		if options.NLatestEpisodes == -1 {
 			return episodesMetadata

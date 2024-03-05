@@ -3,9 +3,20 @@ package util
 import (
 	"fmt"
 	"os"
+	"os/user"
+	"path/filepath"
 	"regexp"
 	"strings"
 )
+
+func GetDefaultDownloadDirectory() string {
+	usr, err := user.Current()
+	if err != nil {
+		return "./test"
+	}
+	t := filepath.Join(usr.HomeDir, "Downloads")
+	return t
+}
 
 func SanitizeFileName(fileName string) string {
 	sanitizedFileName := strings.TrimSpace(fileName)
